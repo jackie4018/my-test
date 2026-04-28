@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>動詞過去式練習</title>
+<style>
+:root{
+  --bg: #ffffff;
+  --bg2: #f5f5f4;
+  --bg3: #efede8;
+  --text: #1a1a1a;
+  --text2: #6b6b6b;
+  --text3: #9a9a9a;
+  --border: rgba(0,0,0,0.12);
+  --border2: rgba(0,0,0,0.22);
+  --radius: 8px;
+  --radius-lg: 12px;
+  --green: #1D9E75;
+  --green-light: #E1F5EE;
+  --green-dark: #085041;
+  --red: #E24B4A;
+  --red-light: #FCEBEB;
+  --red-dark: #501313;
+  --amber: #EF9F27;
+  --amber-light: #FAEEDA;
+  --amber-dark: #633806;
+  --purple-light: #EEEDFE;
+  --purple-dark: #3C3489;
+  --gray-mid: #888780;
+  --gray-light: #F1EFE8;
+  --gray-dark: #444441;
+  --teal-border: #5DCAA5;
+  --coral: #F0997B;
+  --coral-dark: #993C1D;
+  --coral-light: #FAECE7;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg: #1c1c1e;
+    --bg2: #2c2c2e;
+    --bg3: #3a3a3c;
+    --text: #f2f2f7;
+    --text2: #aeaeb2;
+    --text3: #636366;
+    --border: rgba(255,255,255,0.12);
+    --border2: rgba(255,255,255,0.22);
+    --green-light: #0a3a2a;
+    --green-dark: #9FE1CB;
+    --red-light: #3a1010;
+    --red-dark: #F09595;
+    --amber-light: #3a2a00;
+    --amber-dark: #FAC775;
+    --purple-light: #1e1d4a;
+    --purple-dark: #AFA9EC;
+    --gray-light: #2c2c2e;
+    --gray-dark: #D3D1C7;
+    --coral-light: #3a1500;
+    --coral-dark: #F0997B;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh;}
+#app{padding:.75rem;max-width:480px;margin:0 auto;}
+.screen{display:none;}.screen.active{display:block;}
+.th{font-size:17px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.ts{font-size:12px;color:var(--text2);margin-bottom:10px;}
+.btn{width:100%;background:var(--bg2);border:0.5px solid var(--border);color:var(--text);border-radius:var(--radius);padding:13px;font-size:15px;cursor:pointer;font-weight:500;margin-top:8px;display:block;transition:background .15s;}
+.btn:active{background:var(--bg3);}
+.streak-bar{display:flex;align-items:center;gap:10px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);padding:9px 12px;margin-bottom:10px;}
+.badges-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.badge{display:flex;flex-direction:column;align-items:center;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);padding:6px 8px;min-width:52px;}
+.badge.locked{opacity:0.28;}
+.badge-icon{font-size:17px;}.badge-nm{font-size:10px;color:var(--text2);text-align:center;margin-top:2px;}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.mc{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:.9rem .75rem;cursor:pointer;text-align:center;transition:border-color .15s;}
+.mc:active{background:var(--bg2);}
+.mc-icon{font-size:22px;margin-bottom:4px;}
+.mc-title{font-size:13px;font-weight:600;color:var(--text);}
+.mc-desc{font-size:11px;color:var(--text2);margin-top:2px;}
+.setup-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem;margin-top:8px;}
+.pf{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
+.ni{flex:1;border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 10px;font-size:15px;color:var(--text);background:var(--bg);outline:none;}
+.ni:focus{border-color:var(--border2);}
+.sr{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);margin-top:6px;}
+.sel{border:0.5px solid var(--border);border-radius:var(--radius);padding:7px 9px;font-size:13px;background:var(--bg);color:var(--text);outline:none;}
+.hud{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:7px;margin-bottom:7px;}
+.hp{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);padding:7px;text-align:center;}
+.hn{font-size:11px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hs{font-size:20px;font-weight:600;}
+.hp1{border-color:var(--teal-border);}.hp1 .hs{color:var(--green);}
+.hp2{border-color:var(--coral);}.hp2 .hs{color:var(--coral-dark);}
+.tr{position:relative;width:50px;height:50px;margin:0 auto;}
+.tr svg{transform:rotate(-90deg);}
+.tn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--text);}
+.pw{background:var(--bg2);border-radius:99px;height:4px;margin-bottom:7px;}
+.pb{height:4px;border-radius:99px;background:var(--green);transition:width .3s;}
+.tbnr{text-align:center;margin-bottom:7px;padding:6px;border-radius:var(--radius);font-size:13px;font-weight:500;}
+.tp1{background:var(--green-light);color:var(--green-dark);}
+.tp2{background:var(--coral-light);color:var(--coral-dark);}
+.dir-chip{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:500;margin-bottom:6px;}
+.dir-fwd{background:var(--green-light);color:var(--green-dark);}
+.dir-rev{background:var(--purple-light);color:var(--purple-dark);}
+.qword{text-align:center;font-size:36px;font-weight:600;color:var(--text);margin:4px 0 2px;}
+.qlabel{text-align:center;font-size:12px;color:var(--text2);margin-bottom:9px;}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.cb{background:var(--bg);border:0.5px solid var(--border);color:var(--text);border-radius:var(--radius);padding:14px 6px;font-size:15px;cursor:pointer;transition:background .12s;}
+.cb.ok{background:var(--green-light);border-color:var(--teal-border);color:var(--green-dark);}
+.cb.no{background:var(--coral-light);border-color:var(--coral);color:var(--coral-dark);}
+.cb:disabled{cursor:default;}
+.ti{width:100%;border:0.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:20px;text-align:center;color:var(--text);background:var(--bg);margin-top:7px;outline:none;}
+.ti:focus{border-color:var(--border2);}
+.ti.ok{border-color:var(--teal-border);background:var(--green-light);color:var(--green-dark);}
+.ti.no{border-color:var(--coral);background:var(--coral-light);color:var(--coral-dark);}
+.fb{text-align:center;font-size:14px;font-weight:500;min-height:20px;margin-top:6px;}
+.fo{color:var(--green);}.fn{color:var(--red);}
+.nb{width:100%;background:var(--bg2);border:0.5px solid var(--border);color:var(--text);border-radius:var(--radius);padding:12px;font-size:14px;cursor:pointer;margin-top:8px;font-weight:500;}
+.rw{text-align:center;padding:.5rem 0;}
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
+.sc{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:.8rem;text-align:center;}
+.sc-n{font-size:12px;color:var(--text2);margin-bottom:3px;}
+.sc-s{font-size:24px;font-weight:600;}
+.s1 .sc-s{color:var(--green);}.s2 .sc-s{color:var(--coral-dark);}
+.nb-box{background:var(--green-light);border:0.5px solid var(--teal-border);border-radius:var(--radius-lg);padding:10px;margin-bottom:9px;text-align:center;}
+.mi-wrap{margin-bottom:9px;text-align:left;}
+.mi-t{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px;}
+.mi{display:flex;justify-content:space-between;padding:6px 0;border-bottom:0.5px solid var(--border);font-size:13px;}
+.mi span:last-child{color:var(--coral-dark);font-weight:500;}
+.sw-center{text-align:center;padding:2rem .5rem;}
+.tbl-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.tbl-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:9px;}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2);}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-master{background:var(--green);}
+.dot-ok{background:var(--amber);}
+.dot-weak{background:var(--red);}
+.dot-new{background:var(--gray-mid);}
+.search-row{margin-bottom:9px;}
+.search-in{width:100%;border:0.5px solid var(--border);border-radius:var(--radius);padding:9px 11px;font-size:15px;color:var(--text);background:var(--bg);outline:none;}
+.search-in:focus{border-color:var(--border2);}
+.filter-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px;}
+.f-btn{padding:5px 12px;border-radius:99px;font-size:12px;border:0.5px solid var(--border);background:var(--bg);color:var(--text2);cursor:pointer;white-space:nowrap;}
+.f-all.on{background:var(--bg2);border-color:var(--border2);color:var(--text);font-weight:500;}
+.f-master.on{background:var(--green-light);border-color:var(--green);color:var(--green-dark);font-weight:500;}
+.f-ok.on{background:var(--amber-light);border-color:var(--amber);color:var(--amber-dark);font-weight:500;}
+.f-weak.on{background:var(--red-light);border-color:var(--red);color:var(--red-dark);font-weight:500;}
+.f-new.on{background:var(--gray-light);border-color:var(--gray-mid);color:var(--gray-dark);font-weight:500;}
+.tbl-wrap{overflow-x:auto;}
+.vtbl{width:100%;border-collapse:collapse;font-size:14px;table-layout:fixed;}
+.vtbl th{background:var(--bg2);color:var(--text2);font-weight:500;padding:8px 8px;text-align:left;border-bottom:0.5px solid var(--border);position:sticky;top:0;}
+.vtbl td{padding:8px 8px;border-bottom:0.5px solid var(--border);color:var(--text);vertical-align:middle;}
+.vtbl tr:last-child td{border-bottom:none;}
+.vtbl tr:active td{background:var(--bg2);}
+.status-pill{display:inline-block;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:500;white-space:nowrap;}
+.sp-master{background:var(--green-light);color:var(--green-dark);}
+.sp-ok{background:var(--amber-light);color:var(--amber-dark);}
+.sp-weak{background:var(--red-light);color:var(--red-dark);}
+.sp-new{background:var(--gray-light);color:var(--gray-dark);}
+.num-cell{color:var(--text3);font-size:12px;}
+.stats-row{display:flex;gap:8px;margin-bottom:12px;}
+.stat-card{flex:1;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 4px;text-align:center;}
+.stat-n{font-size:20px;font-weight:600;}
+.stat-l{font-size:10px;color:var(--text2);margin-top:2px;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<div id="home" class="screen active">
+  <p class="th">動詞過去式練習</p>
+  <p class="ts">國中會考版 · <span id="total-ct">0</span> 個動詞</p>
+  <div class="streak-bar">
+    <span style="font-size:22px">🔥</span>
+    <div style="flex:1">
+      <div style="font-size:16px;font-weight:600;color:var(--text)"><span id="sc">0</span> 天連勝</div>
+      <div style="font-size:11px;color:var(--text2)">今天練習了嗎？</div>
+    </div>
+    <div style="font-size:12px;color:var(--text2)">最高 <span id="bc">0</span> 天</div>
+  </div>
+  <div class="badges-row" id="bdg"></div>
+  <div class="mode-grid">
+    <div class="mc" onclick="solo('choice')"><div class="mc-icon">🎯</div><div class="mc-title">選擇題</div><div class="mc-desc">正向＋反向混合</div></div>
+    <div class="mc" onclick="solo('type')"><div class="mc-icon">✏️</div><div class="mc-title">拼字挑戰</div><div class="mc-desc">正向＋反向混合</div></div>
+    <div class="mc" onclick="solo('flash')"><div class="mc-icon">🃏</div><div class="mc-title">單字卡</div><div class="mc-desc">翻牌自我評分</div></div>
+    <div class="mc" onclick="showSetup()"><div class="mc-icon">⚔️</div><div class="mc-title">雙人對戰</div><div class="mc-desc">兩人輪流搶分！</div></div>
+    <div class="mc" onclick="showTable()" style="grid-column:span 2"><div class="mc-icon">📋</div><div class="mc-title">完整對照表</div><div class="mc-desc">查看學習狀況</div></div>
+  </div>
+</div>
+
+<div id="setup" class="screen">
+  <p class="th">⚔️ 雙人對戰設定</p>
+  <div class="setup-card">
+    <div class="pf"><div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0"></div><input class="ni" id="n1" value="玩家 1"></div>
+    <div class="pf"><div style="width:10px;height:10px;border-radius:50%;background:#D85A30;flex-shrink:0"></div><input class="ni" id="n2" value="玩家 2"></div>
+    <div class="sr">每人題數：<select class="sel" id="rds"><option value="5">5題</option><option value="10" selected>10題</option><option value="15">15題</option><option value="20">20題</option></select></div>
+    <div class="sr" style="margin-top:6px">模式：<select class="sel" id="bm"><option value="choice">選擇題</option><option value="type">拼字</option></select></div>
+  </div>
+  <button class="btn" onclick="startBattle()">開始對戰 ⚔️</button>
+  <button class="btn" onclick="goHome()">返回</button>
+</div>
+
+<div id="game" class="screen">
+  <div class="hud">
+    <div class="hp hp1"><div class="hn" id="h1n"></div><div class="hs" id="h1s">0</div></div>
+    <div style="text-align:center">
+      <div class="tr">
+        <svg width="50" height="50" viewBox="0 0 50 50"><circle fill="none" stroke="var(--bg2)" stroke-width="4" cx="25" cy="25" r="21"/><circle id="arc" fill="none" stroke="#1D9E75" stroke-width="4" stroke-linecap="round" cx="25" cy="25" r="21" stroke-dasharray="131.9" stroke-dashoffset="0"/></svg>
+        <div class="tn" id="tnum">10</div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);margin-top:2px" id="qn"></div>
+    </div>
+    <div class="hp hp2"><div class="hn" id="h2n"></div><div class="hs" id="h2s"></div></div>
+  </div>
+  <div class="pw"><div class="pb" id="prg"></div></div>
+  <div id="bnr" class="tbnr" style="display:none"></div>
+  <div id="gc"></div>
+</div>
+
+<div id="sw" class="screen">
+  <div class="sw-center">
+    <div style="font-size:52px;margin-bottom:12px">🔄</div>
+    <div style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:4px" id="sw-t"></div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:14px" id="sw-s"></div>
+    <div id="sw-b" style="margin-bottom:14px"></div>
+    <button class="btn" onclick="goTurn()">準備好了 →</button>
+  </div>
+</div>
+
+<div id="result" class="screen">
+  <div class="rw">
+    <div style="font-size:52px;margin-bottom:8px" id="ri"></div>
+    <div style="font-size:19px;font-weight:600;color:var(--text);margin-bottom:3px" id="rn"></div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:13px" id="rs"></div>
+    <div class="sc-grid">
+      <div class="sc s1"><div class="sc-n" id="rn1">答對</div><div class="sc-s" id="rs1">0</div></div>
+      <div class="sc s2"><div class="sc-n" id="rn2">答錯</div><div class="sc-s" id="rs2">0</div></div>
+    </div>
+    <div id="nbb" style="display:none" class="nb-box">
+      <div style="font-size:12px;color:var(--green-dark);font-weight:500;margin-bottom:5px">🎉 解鎖新徽章！</div>
+      <div style="font-size:26px;letter-spacing:4px" id="nbi"></div>
+    </div>
+    <div class="mi-wrap" id="mw"></div>
+    <button class="btn" onclick="again()">再玩一次</button>
+    <button class="btn" onclick="goHome()">回主選單</button>
+  </div>
+</div>
+
+<div id="table-screen" class="screen">
+  <div class="tbl-header">
+    <button onclick="goHome()" style="background:none;border:none;cursor:pointer;font-size:20px;color:var(--text2);padding:0;flex-shrink:0;line-height:1">←</button>
+    <p class="th" style="margin:0">完整對照表</p>
+    <span style="font-size:12px;color:var(--text2);margin-left:auto" id="tbl-count"></span>
+  </div>
+  <div class="stats-row" id="stats-row"></div>
+  <div class="tbl-legend">
+    <div class="leg-item"><div class="dot dot-master"></div>精熟</div>
+    <div class="leg-item"><div class="dot dot-ok"></div>普通</div>
+    <div class="leg-item"><div class="dot dot-weak"></div>待加強</div>
+    <div class="leg-item"><div class="dot dot-new"></div>未練習</div>
+  </div>
+  <div class="filter-row">
+    <div class="f-btn f-all on" id="fall" onclick="setTblF('all',this)">全部</div>
+    <div class="f-btn f-master" onclick="setTblF('master',this)">精熟</div>
+    <div class="f-btn f-ok" onclick="setTblF('ok',this)">普通</div>
+    <div class="f-btn f-weak" onclick="setTblF('weak',this)">待加強</div>
+    <div class="f-btn f-new" onclick="setTblF('new',this)">未練習</div>
+  </div>
+  <div class="search-row">
+    <input class="search-in" id="srch" type="text" placeholder="搜尋動詞…" oninput="filterTable()">
+  </div>
+  <div class="tbl-wrap">
+    <table class="vtbl">
+      <thead><tr>
+        <th style="width:11%">#</th>
+        <th style="width:31%">原形</th>
+        <th style="width:31%">過去式</th>
+        <th style="width:27%">狀況</th>
+      </tr></thead>
+      <tbody id="tbl-body"></tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+<script>
+const VB=[
+  {b:'ask',p:'asked'},{b:'answer',p:'answered'},{b:'be',p:'was/were'},
+  {b:'begin',p:'began'},{b:'believe',p:'believed'},{b:'bite',p:'bit'},
+  {b:'blow',p:'blew'},{b:'borrow',p:'borrowed'},{b:'break',p:'broke'},
+  {b:'bring',p:'brought'},{b:'build',p:'built'},{b:'burn',p:'burned'},
+  {b:'buy',p:'bought'},{b:'call',p:'called'},{b:'camp',p:'camped'},
+  {b:'carry',p:'carried'},{b:'catch',p:'caught'},{b:'change',p:'changed'},
+  {b:'choose',p:'chose'},{b:'clean',p:'cleaned'},{b:'climb',p:'climbed'},
+  {b:'close',p:'closed'},{b:'come',p:'came'},{b:'become',p:'became'},
+  {b:'cook',p:'cooked'},{b:'cost',p:'cost'},{b:'cry',p:'cried'},
+  {b:'cut',p:'cut'},{b:'deal',p:'dealt'},{b:'decide',p:'decided'},
+  {b:'dig',p:'dug'},{b:'do',p:'did'},{b:'draw',p:'drew'},
+  {b:'dream',p:'dreamed'},{b:'drink',p:'drank'},{b:'drive',p:'drove'},
+  {b:'drop',p:'dropped'},{b:'eat',p:'ate'},{b:'enjoy',p:'enjoyed'},
+  {b:'explain',p:'explained'},{b:'fall',p:'fell'},{b:'feed',p:'fed'},
+  {b:'feel',p:'felt'},{b:'fight',p:'fought'},{b:'find',p:'found'},
+  {b:'finish',p:'finished'},{b:'fly',p:'flew'},{b:'forget',p:'forgot'},
+  {b:'freeze',p:'froze'},{b:'get',p:'got'},{b:'give',p:'gave'},
+  {b:'go',p:'went'},{b:'grow',p:'grew'},{b:'hang',p:'hung'},
+  {b:'happen',p:'happened'},{b:'have',p:'had'},{b:'hear',p:'heard'},
+  {b:'help',p:'helped'},{b:'hide',p:'hid'},{b:'hike',p:'hiked'},
+  {b:'hit',p:'hit'},{b:'hold',p:'held'},{b:'hop',p:'hopped'},
+  {b:'hug',p:'hugged'},{b:'hurry',p:'hurried'},{b:'hurt',p:'hurt'},
+  {b:'imagine',p:'imagined'},{b:'introduce',p:'introduced'},{b:'invite',p:'invited'},
+  {b:'join',p:'joined'},{b:'jump',p:'jumped'},{b:'keep',p:'kept'},
+  {b:'know',p:'knew'},{b:'laugh',p:'laughed'},{b:'lead',p:'led'},
+  {b:'learn',p:'learned'},{b:'leave',p:'left'},{b:'let',p:'let'},
+  {b:'lie',p:'lay'},{b:'like',p:'liked'},{b:'listen',p:'listened'},
+  {b:'live',p:'lived'},{b:'look',p:'looked'},{b:'lose',p:'lost'},
+  {b:'love',p:'loved'},{b:'mean',p:'meant'},{b:'meet',p:'met'},
+  {b:'move',p:'moved'},{b:'need',p:'needed'},{b:'nod',p:'nodded'},
+  {b:'open',p:'opened'},{b:'paint',p:'painted'},{b:'panic',p:'panicked'},
+  {b:'pay',p:'paid'},{b:'pick',p:'picked'},{b:'plan',p:'planned'},
+  {b:'play',p:'played'},{b:'practice',p:'practiced'},{b:'prefer',p:'preferred'},
+  {b:'prepare',p:'prepared'},{b:'promise',p:'promised'},{b:'put',p:'put'},
+  {b:'read',p:'read'},{b:'receive',p:'received'},{b:'remember',p:'remembered'},
+  {b:'return',p:'returned'},{b:'ride',p:'rode'},{b:'rise',p:'rose'},
+  {b:'run',p:'ran'},{b:'say',p:'said'},{b:'see',p:'saw'},
+  {b:'sell',p:'sold'},{b:'send',p:'sent'},{b:'set',p:'set'},
+  {b:'shake',p:'shook'},{b:'share',p:'shared'},{b:'shine',p:'shone'},
+  {b:'show',p:'showed'},{b:'shut',p:'shut'},{b:'sing',p:'sang'},
+  {b:'sit',p:'sat'},{b:'skip',p:'skipped'},{b:'sleep',p:'slept'},
+  {b:'speak',p:'spoke'},{b:'spell',p:'spelled'},{b:'spend',p:'spent'},
+  {b:'stand',p:'stood'},{b:'start',p:'started'},{b:'stop',p:'stopped'},
+  {b:'study',p:'studied'},{b:'swim',p:'swam'},{b:'take',p:'took'},
+  {b:'talk',p:'talked'},{b:'teach',p:'taught'},{b:'tell',p:'told'},
+  {b:'think',p:'thought'},{b:'throw',p:'threw'},{b:'travel',p:'traveled'},
+  {b:'try',p:'tried'},{b:'understand',p:'understood'},{b:'use',p:'used'},
+  {b:'visit',p:'visited'},{b:'wait',p:'waited'},{b:'wake',p:'woke'},
+  {b:'walk',p:'walked'},{b:'want',p:'wanted'},{b:'watch',p:'watched'},
+  {b:'wear',p:'wore'},{b:'win',p:'won'},{b:'work',p:'worked'},
+  {b:'worry',p:'worried'},{b:'write',p:'wrote'},
+].map((v,i)=>({...v,id:i+1}));
+
+const BDEFS=[
+  {id:'first',icon:'🌱',name:'初試啼聲',fn:s=>s.g>=1},
+  {id:'streak3',icon:'🔥',name:'3天連勝',fn:s=>s.streak>=3},
+  {id:'streak7',icon:'🏅',name:'7天連勝',fn:s=>s.streak>=7},
+  {id:'streak30',icon:'👑',name:'30天連勝',fn:s=>s.streak>=30},
+  {id:'perfect',icon:'⭐',name:'滿分達人',fn:s=>s.perfect},
+  {id:'speed',icon:'⚡',name:'神速答題',fn:s=>s.speed},
+  {id:'vet',icon:'🎓',name:'練習達人',fn:s=>s.g>=20},
+  {id:'battle',icon:'⚔️',name:'對戰勝利',fn:s=>s.bw>=1},
+];
+
+let PERF={};
+let ST={streak:0,last:'',best:0,badges:[],g:0,perfect:false,speed:false,bw:0};
+try{const d=localStorage.getItem('vq_final');if(d){const dd=JSON.parse(d);ST=Object.assign(ST,dd.st||{});PERF=dd.perf||{};}}catch(e){}
+function sv(){try{localStorage.setItem('vq_final',JSON.stringify({st:ST,perf:PERF}));}catch(e){}}
+
+function getStatus(b){
+  const r=PERF[b];
+  if(!r||r.total===0)return'new';
+  const rate=r.correct/r.total;
+  if(r.correct>=3&&rate>=0.8)return'master';
+  if(rate>=0.5)return'ok';
+  return'weak';
+}
+function recordResult(b,correct){
+  if(!PERF[b])PERF[b]={correct:0,total:0};
+  PERF[b].total++;
+  if(correct)PERF[b].correct++;
+  sv();
+}
+function updStreak(){
+  const td=new Date().toDateString(),yd=new Date(Date.now()-86400000).toDateString();
+  if(ST.last===td)return;
+  ST.streak=ST.last===yd?ST.streak+1:1;
+  ST.last=td;if(ST.streak>ST.best)ST.best=ST.streak;sv();
+}
+function chkBadges(){
+  const prev=[...ST.badges];
+  BDEFS.forEach(b=>{if(!ST.badges.includes(b.id)&&b.fn(ST))ST.badges.push(b.id);});
+  sv();return ST.badges.filter(id=>!prev.includes(id));
+}
+function renderBdg(){
+  document.getElementById('bdg').innerHTML=BDEFS.map(b=>`<div class="badge${ST.badges.includes(b.id)?'':' locked'}"><div class="badge-icon">${b.icon}</div><div class="badge-nm">${b.name}</div></div>`).join('');
+}
+function updHome(){
+  document.getElementById('sc').textContent=ST.streak;
+  document.getElementById('bc').textContent=ST.best;
+  document.getElementById('total-ct').textContent=VB.length;
+}
+function shuf(a){let b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goHome(){stopT();show('home');updHome();renderBdg();}
+function showSetup(){show('setup');}
+function makeQ(verb){return{...verb,rev:Math.random()<0.5};}
+
+let G={};let tiv=null;let tl=0;let ansd=false;let flpd=false;
+
+function solo(m){
+  updStreak();
+  const weak=VB.filter(v=>['weak','new'].includes(getStatus(v.b)));
+  const others=VB.filter(v=>!['weak','new'].includes(getStatus(v.b)));
+  const pool=shuf([...shuf(weak).slice(0,10),...shuf(others).slice(0,5)]).slice(0,15).map(makeQ);
+  G={m,bt:false,s1:0,q:pool,i:0,ms:[],cur:1};
+  document.getElementById('h1n').textContent='';
+  document.getElementById('h2n').textContent='';
+  document.getElementById('h2s').textContent='';
+  document.getElementById('bnr').style.display='none';
+  show('game');rQ();
+}
+function startBattle(){
+  const p1=document.getElementById('n1').value||'玩家 1',p2=document.getElementById('n2').value||'玩家 2';
+  const r=parseInt(document.getElementById('rds').value),m=document.getElementById('bm').value;
+  updStreak();
+  const base=shuf(VB).slice(0,r*2);
+  G={m,bt:true,p1,p2,s1:0,s2:0,q1:base.slice(0,r).map(makeQ),q2:base.slice(r).map(makeQ),m1:[],m2:[],r,i:0,cur:1};
+  swScreen(1,true);
+}
+function swScreen(p,first){
+  stopT();
+  const nm=p===1?G.p1:G.p2;
+  document.getElementById('sw-t').textContent=nm+' 的回合！';
+  document.getElementById('sw-s').textContent='把手機交給 '+nm+'，準備答題！';
+  const sb=document.getElementById('sw-b');
+  if(!first){
+    const on=p===1?G.p2:G.p1,os=p===1?G.s2:G.s1;
+    const cl=p===1?'var(--coral-dark)':'var(--green-dark)',bg=p===1?'var(--coral-light)':'var(--green-light)';
+    sb.innerHTML=`<span style="display:inline-block;padding:4px 14px;border-radius:99px;font-size:13px;font-weight:500;background:${bg};color:${cl}">${on} 得了 ${os} 分</span>`;
+  }else sb.innerHTML='';
+  show('sw');
+}
+function goTurn(){
+  G.i=0;updHUD();
+  const b=document.getElementById('bnr');
+  if(G.bt){b.style.display='block';b.className='tbnr '+(G.cur===1?'tp1':'tp2');b.textContent=(G.cur===1?G.p1:G.p2)+' 的回合';}
+  else b.style.display='none';
+  show('game');rQ();
+}
+function cQ(){return G.bt?(G.cur===1?G.q1:G.q2):G.q;}
+function updHUD(){
+  const q=cQ();
+  document.getElementById('h1n').textContent=G.bt?G.p1:'';
+  document.getElementById('h2n').textContent=G.bt?G.p2:'';
+  document.getElementById('h1s').textContent=G.s1;
+  document.getElementById('h2s').textContent=G.bt?G.s2:'';
+  document.getElementById('qn').textContent=(G.i+1)+'/'+q.length;
+  document.getElementById('prg').style.width=(G.i/q.length*100)+'%';
+}
+function stopT(){clearInterval(tiv);tiv=null;}
+function startT(cb){
+  stopT();tl=10;uTUI(10);
+  tiv=setInterval(()=>{tl--;uTUI(tl);if(tl<=0){stopT();cb();}},1000);
+}
+function uTUI(t){
+  const a=document.getElementById('arc'),n=document.getElementById('tnum');
+  a.style.strokeDashoffset=131.9*(1-Math.max(0,t/10));
+  a.style.stroke=t<=3?'#E24B4A':t<=6?'#EF9F27':'#1D9E75';
+  n.textContent=t;
+  n.style.color=t<=3?'#E24B4A':t<=6?'#BA7517':'var(--text)';
+}
+function rQ(){
+  const q=cQ();
+  if(G.i>=q.length){if(G.bt&&G.cur===1){G.cur=2;swScreen(2,false);}else showRes();return;}
+  updHUD();ansd=false;flpd=false;
+  const item=q[G.i];
+  const rev=item.rev;
+  const qWord=rev?item.p:item.b;
+  const ansWord=rev?item.b:item.p;
+  const qLbl=rev?'這是哪個動詞的過去式？':'過去式是？';
+  const chipClass=rev?'dir-rev':'dir-fwd';
+  const chipTxt=rev?'反向':'正向';
+  const gc=document.getElementById('gc');
+  if(G.m==='flash'){
+    stopT();
+    gc.innerHTML=`<div style="text-align:center;margin-bottom:5px"><span class="dir-chip ${chipClass}">${chipTxt}</span></div>
+<div style="perspective:800px;height:165px;cursor:pointer" onclick="doFlip()">
+<div style="position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .45s" id="ci">
+<div style="position:absolute;inset:0;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px">
+<div style="font-size:11px;color:var(--text2)">${rev?'過去式':'原形'}</div>
+<div style="font-size:38px;font-weight:600;color:var(--text)">${qWord}</div>
+<div style="font-size:11px;color:var(--text2)">${qLbl}</div></div>
+<div style="position:absolute;inset:0;background:var(--bg);border:0.5px solid var(--teal-border);border-radius:var(--radius-lg);backface-visibility:hidden;transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px">
+<div style="font-size:11px;color:var(--text2)">${rev?'原形':'過去式'}</div>
+<div style="font-size:36px;font-weight:600;color:var(--green)">${ansWord}</div>
+</div></div></div>
+<div id="fcb" style="display:none;margin-top:9px">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+<button style="background:var(--coral-light);border:0.5px solid var(--coral);color:var(--coral-dark);border-radius:var(--radius);padding:13px;font-size:15px;cursor:pointer;font-weight:500" onclick="mFC(false)">❌ 不熟</button>
+<button style="background:var(--green-light);border:0.5px solid var(--teal-border);color:var(--green-dark);border-radius:var(--radius);padding:13px;font-size:15px;cursor:pointer;font-weight:500" onclick="mFC(true)">✅ 記住了</button>
+</div></div>
+<button class="btn" onclick="doFlip()">翻面</button>`;
+  } else if(G.m==='choice'){
+    const allOpts=rev?VB.map(v=>v.b):VB.map(v=>v.p);
+    const op=gOpts(ansWord,allOpts);
+    gc.innerHTML=`<div style="text-align:center;margin-bottom:2px"><span class="dir-chip ${chipClass}">${chipTxt}</span></div>
+<div class="qword">${qWord}</div><div class="qlabel">${qLbl}</div>
+<div class="choices" id="ch">${op.map(o=>`<button class="cb" onclick="chC(this,${JSON.stringify(o)},${JSON.stringify(ansWord)})">${o}</button>`).join('')}</div>
+<div class="fb" id="fb"></div>
+<button class="nb" id="nb" style="display:none" onclick="nxtQ()">下一題 →</button>`;
+    startT(()=>toQ(ansWord));
+  } else {
+    gc.innerHTML=`<div style="text-align:center;margin-bottom:2px"><span class="dir-chip ${chipClass}">${chipTxt}</span></div>
+<div class="qword">${qWord}</div><div class="qlabel">${qLbl}</div>
+<input class="ti" id="tp" type="text" placeholder="${rev?'輸入原形…':'輸入過去式…'}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key==='Enter')chT()">
+<div class="fb" id="fb"></div>
+<button class="nb" id="nb" style="display:none" onclick="nxtQ()">下一題 →</button>`;
+    setTimeout(()=>{const e=document.getElementById('tp');if(e)e.focus();},80);
+    startT(()=>toQ(ansWord));
+  }
+}
+function doFlip(){flpd=!flpd;document.getElementById('ci').style.transform=flpd?'rotateY(180deg)':'';const f=document.getElementById('fcb');if(f)f.style.display=flpd?'block':'none';}
+function mFC(ok){recordResult(cQ()[G.i].b,ok);if(ok)addS(1);else addM(cQ()[G.i]);nxtQ();}
+function gOpts(c,pool){const o=shuf([...new Set(pool)].filter(x=>x!==c)).slice(0,3);return shuf([c,...o]);}
+function addS(n){if(!G.bt||G.cur===1)G.s1+=n;else G.s2+=n;document.getElementById('h1s').textContent=G.s1;if(G.bt)document.getElementById('h2s').textContent=G.s2;}
+function addM(v){if(!G.bt||G.cur===1)(G.ms=G.ms||[]).push(v);else(G.m2=G.m2||[]).push(v);}
+function toQ(c){
+  if(ansd)return;ansd=true;
+  recordResult(cQ()[G.i].b,false);
+  const fb=document.getElementById('fb');
+  if(fb){fb.textContent='時間到！答案：'+c;fb.className='fb fn';}
+  document.querySelectorAll('.cb').forEach(b=>{if(b.textContent===c)b.classList.add('ok');b.disabled=true;});
+  const tp=document.getElementById('tp');if(tp){tp.disabled=true;tp.classList.add('no');}
+  addM(cQ()[G.i]);
+  const nb=document.getElementById('nb');if(nb)nb.style.display='block';
+}
+function chC(btn,ch,c){
+  if(ansd)return;ansd=true;stopT();
+  const ok=ch===c;
+  recordResult(cQ()[G.i].b,ok);
+  document.querySelectorAll('.cb').forEach(b=>{b.onclick=null;b.disabled=true;if(b.textContent===c)b.classList.add('ok');});
+  const fb=document.getElementById('fb');
+  if(ok){btn.classList.add('ok');addS(1);fb.textContent='正確！+1 分';fb.className='fb fo';if(tl>=8)ST.speed=true;}
+  else{btn.classList.add('no');addM(cQ()[G.i]);fb.textContent='答案是：'+c;fb.className='fb fn';}
+  document.getElementById('nb').style.display='block';
+}
+function chT(){
+  if(ansd)return;
+  const tp=document.getElementById('tp');
+  const v=tp.value.trim().toLowerCase();
+  const item=cQ()[G.i];
+  const correct=item.rev?item.b:item.p;
+  const ok=correct.toLowerCase().split('/').map(s=>s.trim()).includes(v);
+  ansd=true;stopT();tp.disabled=true;
+  recordResult(item.b,ok);
+  const fb=document.getElementById('fb');
+  if(ok){tp.classList.add('ok');addS(1);fb.textContent='正確！+1 分';fb.className='fb fo';if(tl>=8)ST.speed=true;}
+  else{tp.classList.add('no');addM(item);fb.textContent='答案是：'+correct;fb.className='fb fn';}
+  document.getElementById('nb').style.display='block';
+}
+function nxtQ(){G.i++;rQ();}
+function showRes(){
+  stopT();ST.g+=1;
+  const tot=G.bt?G.r:G.q.length;
+  if(!G.bt&&G.s1===tot)ST.perfect=true;
+  if(G.bt&&G.s1>G.s2)ST.bw=(ST.bw||0)+1;
+  sv();const newB=chkBadges();show('result');
+  if(G.bt){
+    const a=G.s1,b2=G.s2;let ic,nm,sb;
+    if(a>b2){ic='🏆';nm=G.p1+' 獲勝！';sb=a+' 分 vs '+b2+' 分';}
+    else if(b2>a){ic='🏆';nm=G.p2+' 獲勝！';sb=b2+' 分 vs '+a+' 分';}
+    else{ic='🤝';nm='平手！';sb='各得 '+a+' 分';}
+    document.getElementById('ri').textContent=ic;document.getElementById('rn').textContent=nm;document.getElementById('rs').textContent=sb;
+    document.getElementById('rn1').textContent=G.p1;document.getElementById('rn2').textContent=G.p2;
+    document.getElementById('rs1').textContent=G.s1;document.getElementById('rs2').textContent=G.s2;
+    const am=[...(G.m1||[]),...(G.m2||[])];
+    const uq=[...new Map(am.map(v=>[v.b,v])).values()];
+    document.getElementById('mw').innerHTML=uq.length?'<div class="mi-t">需要加強的單字</div>'+uq.map(v=>`<div class="mi"><span>${v.b}</span><span>${v.p}</span></div>`).join(''):'<p style="text-align:center;font-size:13px;color:var(--green);margin:1rem 0">全部答對！🎉</p>';
+  } else {
+    const c=G.s1,pct=Math.round(c/tot*100);
+    document.getElementById('ri').textContent=pct>=90?'🌟':pct>=70?'👍':'💪';
+    document.getElementById('rn').textContent=c+' / '+tot+' 分';
+    document.getElementById('rs').textContent='答對率 '+pct+'%　🔥 '+ST.streak+' 天連勝';
+    document.getElementById('rn1').textContent='答對';document.getElementById('rn2').textContent='答錯';
+    document.getElementById('rs1').textContent=c;document.getElementById('rs2').textContent=tot-c;
+    const ms=G.ms||[];
+    document.getElementById('mw').innerHTML=ms.length?'<div class="mi-t">需要加強的單字</div>'+ms.map(v=>`<div class="mi"><span>${v.b}</span><span>${v.p}</span></div>`).join(''):'<p style="text-align:center;font-size:13px;color:var(--green);margin:1rem 0">全部答對！🎉</p>';
+  }
+  if(newB.length){document.getElementById('nbb').style.display='block';document.getElementById('nbi').textContent=newB.map(id=>BDEFS.find(x=>x.id===id).icon).join(' ');}
+  else document.getElementById('nbb').style.display='none';
+}
+function again(){if(G.bt)show('setup');else solo(G.m);}
+
+const STATUS_LABEL={master:'精熟',ok:'普通',weak:'待加強',new:'未練習'};
+const STATUS_CLS={master:'sp-master',ok:'sp-ok',weak:'sp-weak',new:'sp-new'};
+let tblFilter='all';
+function showTable(){show('table-screen');renderStats();setTblF('all',document.getElementById('fall'));}
+function renderStats(){
+  const counts={master:0,ok:0,weak:0,new:0};
+  VB.forEach(v=>counts[getStatus(v.b)]++);
+  document.getElementById('stats-row').innerHTML=`
+    <div class="stat-card"><div class="stat-n" style="color:var(--green)">${counts.master}</div><div class="stat-l">精熟</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--amber)">${counts.ok}</div><div class="stat-l">普通</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--red)">${counts.weak}</div><div class="stat-l">待加強</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--gray-mid)">${counts.new}</div><div class="stat-l">未練習</div></div>`;
+}
+function setTblF(f,el){
+  tblFilter=f;
+  document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  filterTable();
+}
+function filterTable(){
+  const q=(document.getElementById('srch').value||'').trim().toLowerCase();
+  const rows=VB.filter(v=>{
+    const sOk=tblFilter==='all'||getStatus(v.b)===tblFilter;
+    const tOk=!q||v.b.includes(q)||v.p.includes(q);
+    return sOk&&tOk;
+  });
+  document.getElementById('tbl-count').textContent=rows.length+' 個';
+  document.getElementById('tbl-body').innerHTML=rows.map(v=>{
+    const st=getStatus(v.b);
+    return`<tr><td class="num-cell">${v.id}</td><td>${v.b}</td><td style="font-weight:500;color:var(--green)">${v.p}</td><td><span class="status-pill ${STATUS_CLS[st]}">${STATUS_LABEL[st]}</span></td></tr>`;
+  }).join('');
+}
+updHome();renderBdg();
+</script>
+</body>
+</html>
