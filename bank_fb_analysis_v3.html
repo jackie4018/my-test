@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>銀行 Facebook 競品社群分析報告</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;background:#f5f4f0;color:#1a1a18;font-size:14px;line-height:1.6}
+.page{max-width:1140px;margin:0 auto;padding:40px 24px 80px}
+
+/* header */
+.report-header{background:#1a1a18;color:#fff;border-radius:12px;padding:40px 48px;margin-bottom:32px}
+.report-header .label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#9c9a92;margin-bottom:10px}
+.report-header h1{font-size:28px;font-weight:600;line-height:1.25;margin-bottom:12px}
+.report-header .meta{font-size:13px;color:#9c9a92;display:flex;gap:24px;flex-wrap:wrap;margin-top:16px}
+.report-header .meta span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#4a9;margin-right:6px;vertical-align:middle}
+
+/* section title */
+.sec-title{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#73726c;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #dddbd3}
+
+/* brand cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:32px}
+.card{background:#fff;border-radius:10px;border:1px solid #e4e2da;padding:20px 22px}
+.card-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.avatar{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.av-cathay{background:#e6f1fb;color:#0c447c}
+.av-esun{background:#e1f5ee;color:#0f6e56}
+.av-taishin{background:#eeedfe;color:#3c3489}
+.av-ctbc{background:#faeeda;color:#633806}
+.av-chb{background:#faece7;color:#712b13}
+.av-tcb{background:#f1efe8;color:#2c2c2a}
+.av-richart{background:#e6f1fb;color:#185fa5}
+.card-name{font-size:14px;font-weight:600;color:#1a1a18}
+.card-sub{font-size:11px;color:#73726c;margin-top:1px}
+.stat-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.stat{background:#f5f4f0;border-radius:6px;padding:5px 10px;font-size:11px;color:#444441}
+.stat strong{font-weight:600;color:#1a1a18}
+.tag-list{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.tag{font-size:11px;padding:3px 8px;border-radius:20px}
+.tag-promo{background:#eeedfe;color:#3c3489}
+.tag-brand{background:#faeeda;color:#633806}
+.tag-edu{background:#e1f5ee;color:#0f6e56}
+.tag-inter{background:#faece7;color:#712b13}
+.tag-act{background:#e6f1fb;color:#0c447c}
+.tag-esg{background:#eaf3de;color:#27500a}
+.card-note{font-size:12px;color:#73726c;line-height:1.55;border-top:1px solid #f0ede6;padding-top:10px;margin-top:10px}
+.card-note strong{color:#1a1a18}
+
+/* bar chart */
+.bar-section{background:#fff;border-radius:10px;border:1px solid #e4e2da;padding:22px 24px;margin-bottom:32px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-label{font-size:12px;color:#444441;width:110px;flex-shrink:0;text-align:right}
+.bar-track{flex:1;height:22px;background:#f5f4f0;border-radius:4px;overflow:hidden;display:flex}
+.bar-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:600;min-width:24px}
+.bar-val{font-size:11px;color:#73726c;width:72px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#73726c}
+.legend-dot{width:10px;height:10px;border-radius:2px}
+
+/* compare table */
+.tbl-wrap{overflow-x:auto;margin-bottom:32px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;border:1px solid #e4e2da;font-size:12px}
+th{background:#1a1a18;color:#e8e6de;font-weight:500;text-align:left;padding:12px 14px;white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid #f0ede6;vertical-align:top;color:#2c2c2a;line-height:1.5}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#faf9f6}
+td:first-child{font-weight:600;white-space:nowrap;color:#1a1a18}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.dot-h{background:#d85a30}.dot-m{background:#ba7517}.dot-l{background:#b4b2a9}
+.hi{background:#fff0ed;color:#993c1d;padding:2px 7px;border-radius:12px;font-size:11px;font-weight:600}
+.mid{background:#fdf5e8;color:#854f0b;padding:2px 7px;border-radius:12px;font-size:11px}
+.lo{background:#f1efe8;color:#5f5e5a;padding:2px 7px;border-radius:12px;font-size:11px}
+
+/* interaction ranking */
+.rank-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:32px}
+.rank-card{background:#fff;border-radius:10px;border:1px solid #e4e2da;padding:16px;text-align:center}
+.rank-num{font-size:11px;color:#9c9a92;margin-bottom:4px}
+.rank-brand{font-size:13px;font-weight:600;color:#1a1a18;margin-bottom:4px}
+.rank-score{font-size:22px;font-weight:600;margin-bottom:2px}
+.rank-desc{font-size:11px;color:#73726c}
+.rank-1 .rank-score{color:#d85a30}
+.rank-2 .rank-score{color:#ba7517}
+.rank-3 .rank-score{color:#534ab7}
+.rank-4 .rank-score{color:#0f6e56}
+.rank-5 .rank-score{color:#888780}
+.rank-6 .rank-score{color:#888780}
+.rank-7 .rank-score{color:#888780}
+
+/* quadrant */
+.quad-wrap{background:#fff;border-radius:10px;border:1px solid #e4e2da;padding:24px;margin-bottom:32px}
+.quad-container{display:grid;grid-template-columns:28px 1fr;grid-template-rows:1fr 28px;gap:4px;height:300px}
+.quad-y-label{display:flex;align-items:center;justify-content:center;writing-mode:vertical-lr;transform:rotate(180deg);font-size:11px;color:#73726c;letter-spacing:.05em}
+.quad-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;background:#e4e2da;border-radius:8px;overflow:hidden}
+.quad{padding:14px 16px;display:flex;flex-direction:column}
+.quad-tl{background:#f0effe}.quad-tr{background:#e8f5f0}.quad-bl{background:#f5f4f0}.quad-br{background:#fdf5e8}
+.quad-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.quad-tl .quad-label{color:#534ab7}.quad-tr .quad-label{color:#0f6e56}.quad-bl .quad-label{color:#5f5e5a}.quad-br .quad-label{color:#854f0b}
+.quad-brands{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px}
+.qbadge{font-size:11px;padding:3px 8px;border-radius:20px;font-weight:500}
+.qb-purple{background:#eeedfe;color:#3c3489}.qb-green{background:#e1f5ee;color:#0f6e56}
+.qb-gray{background:#f1efe8;color:#444441}.qb-amber{background:#faeeda;color:#633806}
+.qb-coral{background:#faece7;color:#712b13}.qb-dash{background:#fff;color:#d85a30;border:1px dashed #d85a30}
+.quad-note{font-size:10px;color:#73726c;line-height:1.4}
+.quad-x-label{text-align:center;font-size:11px;color:#73726c;padding:4px 0}
+
+/* insight grid */
+.insight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:32px}
+.ic{background:#fff;border-radius:10px;border:1px solid #e4e2da;padding:18px 20px;border-left:3px solid}
+.ic.green{border-left-color:#1d9e75}.ic.amber{border-left-color:#ba7517}.ic.blue{border-left-color:#378add}.ic.coral{border-left-color:#d85a30}
+.ic h4{font-size:13px;font-weight:600;color:#1a1a18;margin-bottom:6px}
+.ic p{font-size:12px;color:#73726c;line-height:1.55}
+
+/* summary */
+.summary{background:#1a1a18;color:#e8e6de;border-radius:12px;padding:28px 32px}
+.summary h3{font-size:14px;font-weight:600;color:#9fe1cb;margin-bottom:12px;letter-spacing:.04em}
+.summary p{font-size:13px;line-height:1.75;color:#c8c6be}
+.summary strong{color:#fff}
+.source{font-size:11px;color:#9c9a92;margin-top:16px;text-align:center}
+
+/* opportunity box */
+.opp-box{background:#fff;border-radius:10px;border:1px solid #e4e2da;padding:20px 24px;margin-bottom:32px}
+.opp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px}
+.opp-item{background:#f5f4f0;border-radius:8px;padding:14px 16px;border-left:3px solid}
+.opp-item.o1{border-left-color:#d85a30}.opp-item.o2{border-left-color:#534ab7}.opp-item.o3{border-left-color:#1d9e75}.opp-item.o4{border-left-color:#ba7517}
+.opp-item h5{font-size:12px;font-weight:600;color:#1a1a18;margin-bottom:4px}
+.opp-item p{font-size:11px;color:#73726c;line-height:1.5}
+
+@media(max-width:600px){
+  .report-header{padding:28px 24px}
+  .report-header h1{font-size:22px}
+  th,td{padding:8px 10px;font-size:11px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="report-header">
+  <div class="label">Social Media Intelligence · Facebook</div>
+  <h1>台灣銀行業 Facebook<br>競品社群分析報告</h1>
+  <div class="meta">
+    <span>資料期間：2026 年 3–4 月</span>
+    <span>分析品牌：7 家銀行</span>
+    <span>平台：Facebook</span>
+    <span>貼文樣本：約 60 則</span>
+    <span>資料來源：ByCrawl 實際抓取</span>
+  </div>
+</div>
+
+<!-- 01 BRAND CARDS -->
+<div class="sec-title">01 各品牌概覽</div>
+<div class="cards">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="avatar av-cathay">國泰</div>
+      <div><div class="card-name">國泰世華銀行</div><div class="card-sub">cathayunitedbank｜32.4 萬粉</div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat">頻率 <strong>高 / 週 3+</strong></div>
+      <div class="stat">最高互動 <strong>83 ❤</strong></div>
+    </div>
+    <div class="tag-list">
+      <span class="tag tag-promo">促銷 60%</span>
+      <span class="tag tag-brand">品牌 30%</span>
+      <span class="tag tag-esg">ESG 10%</span>
+    </div>
+    <div class="card-note">
+      <strong>USP：</strong>CUBE 信用卡日本賞高回饋、卡友稀缺體驗特權（聯名蛋糕/餐廳訂位）、壽星月任務<br>
+      <strong>導流：</strong>CUBE App → 國泰優惠 App → 活動頁<br>
+      <strong>FB 角色：</strong>優惠公告 + 品牌形象輔助
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="avatar av-esun">玉山</div>
+      <div><div class="card-name">玉山銀行</div><div class="card-sub">esunbank｜粉絲數待確認</div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat">頻率 <strong>高 / 幾乎每日</strong></div>
+      <div class="stat">最高互動 <strong>164 ❤</strong></div>
+    </div>
+    <div class="tag-list">
+      <span class="tag tag-promo">促銷 40%</span>
+      <span class="tag tag-edu">教學 30%</span>
+      <span class="tag tag-act">活動整合 30%</span>
+    </div>
+    <div class="card-note">
+      <strong>USP：</strong>多品牌優惠整合（好友日系列）、數位帳戶開戶教學、旅遊回饋（日本/海外）<br>
+      <strong>導流：</strong>玉山行動銀行 App（esun.co 短連結）<br>
+      <strong>FB 角色：</strong>App 導流 + 產品教學廣播
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="avatar av-taishin">台新</div>
+      <div><div class="card-name">台新優惠市集</div><div class="card-sub">Taishinevent｜44 萬粉</div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat">頻率 <strong>高 / 每日</strong></div>
+      <div class="stat">最高互動 <strong>3,902 綜合</strong></div>
+    </div>
+    <div class="tag-list">
+      <span class="tag tag-promo">促銷 50%</span>
+      <span class="tag tag-act">活動 30%</span>
+      <span class="tag tag-inter">互動 20%</span>
+    </div>
+    <div class="card-note">
+      <strong>USP：</strong>留言抽獎爆量互動、旅遊/消費高回饋、金控多產品整合優惠<br>
+      <strong>導流：</strong>活動頁 + LINE POINTS 誘因 + Reel 短影音<br>
+      <strong>FB 角色：</strong>主力行銷平台 / 轉換主戰場
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="avatar av-ctbc">中信</div>
+      <div><div class="card-name">中國信託優惠情報讚</div><div class="card-sub">chinatrust.tw｜61.3 萬粉</div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat">頻率 <strong>高 / 週 3+</strong></div>
+      <div class="stat">最高互動 <strong>1,407 ❤</strong></div>
+    </div>
+    <div class="tag-list">
+      <span class="tag tag-act">活動 40%</span>
+      <span class="tag tag-promo">促銷 30%</span>
+      <span class="tag tag-brand">品牌 20%</span>
+      <span class="tag tag-edu">教學 10%</span>
+    </div>
+    <div class="card-note">
+      <strong>USP：</strong>IP 聯名互動（咖波/小海豹）、App 任務牆導流閉環、親子金融服務<br>
+      <strong>導流：</strong>中信行動銀行 App → LINE 官方帳號<br>
+      <strong>FB 角色：</strong>App 導流主渠道 + 互動活動主場
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="avatar av-chb">彰銀</div>
+      <div><div class="card-name">彰化銀行 柴寶旺旺來</div><div class="card-sub">chb.bank｜36.4 萬粉</div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat">頻率 <strong>高 / 每日</strong></div>
+      <div class="stat">最高互動 <strong>42 ❤ / 5 🔁</strong></div>
+    </div>
+    <div class="tag-list">
+      <span class="tag tag-brand">品牌 40%</span>
+      <span class="tag tag-promo">促銷 30%</span>
+      <span class="tag tag-esg">ESG 20%</span>
+      <span class="tag tag-inter">互動 10%</span>
+    </div>
+    <div class="card-note">
+      <strong>USP：</strong>品牌媒體化（雙周報系列）、台灣 Pay 繳稅整合、ESG 永續三連霸<br>
+      <strong>導流：</strong>官網活動頁 + YouTube 雙周報<br>
+      <strong>FB 角色：</strong>品牌故事 + 優惠公告雙線並行
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="avatar av-tcb">合庫</div>
+      <div><div class="card-name">合作金庫 你的理財金庫</div><div class="card-sub">TCBebank｜粉絲數待確認</div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat">頻率 <strong>高 / 幾乎每日</strong></div>
+      <div class="stat">最高互動 <strong>738 ❤+687 💬</strong></div>
+    </div>
+    <div class="tag-list">
+      <span class="tag tag-edu">教學 35%</span>
+      <span class="tag tag-promo">促銷 30%</span>
+      <span class="tag tag-inter">互動 20%</span>
+      <span class="tag tag-brand">品牌 15%</span>
+    </div>
+    <div class="card-note">
+      <strong>USP：</strong>理財教育導向（防詐/安養信託）、智能理財 iCooper、稅務季外幣優惠<br>
+      <strong>導流：</strong>官網活動頁 + iCooper 平台<br>
+      <strong>FB 角色：</strong>教育型廣播 + 偶發性互動活動
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="avatar av-richart">Ri</div>
+      <div><div class="card-name">Richart</div><div class="card-sub">richart.tw｜24.2 萬粉</div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat">頻率 <strong>中 / 週 1–2</strong></div>
+      <div class="stat">最高互動 <strong>約 150 ❤</strong></div>
+    </div>
+    <div class="tag-list">
+      <span class="tag tag-edu">教學 45%</span>
+      <span class="tag tag-promo">促銷 35%</span>
+      <span class="tag tag-inter">互動 20%</span>
+    </div>
+    <div class="card-note">
+      <strong>USP：</strong>優利活存高利率（3.5%）、數位開戶生日慶活動、信貸低利率導流<br>
+      <strong>導流：</strong>Richart App（tsbk.tw 短連結）→ 官網<br>
+      <strong>FB 角色：</strong>產品廣播 + App 開戶導流，FB 非主力平台（IG 圓環旁說書人才是主場）
+    </div>
+  </div>
+
+</div>
+
+<!-- 02 INTERACTION RANKING -->
+<div class="sec-title">02 互動熱度排名（最高單則 ❤ + 💬 + 🔁 合計）</div>
+<div class="rank-grid">
+  <div class="rank-card rank-1">
+    <div class="rank-num">#1</div>
+    <div class="rank-brand">台新優惠市集</div>
+    <div class="rank-score">3,902</div>
+    <div class="rank-desc">留言抽獎 + 媒體投放<br>易匯通貼文</div>
+  </div>
+  <div class="rank-card rank-2">
+    <div class="rank-num">#2</div>
+    <div class="rank-brand">中國信託</div>
+    <div class="rank-score">1,422</div>
+    <div class="rank-desc">IP 聯名 Reel<br>App 導流互動</div>
+  </div>
+  <div class="rank-card rank-3">
+    <div class="rank-num">#3</div>
+    <div class="rank-brand">合作金庫</div>
+    <div class="rank-score">1,802</div>
+    <div class="rank-desc">兒童節留言抽電影票<br>活動機制驅動</div>
+  </div>
+  <div class="rank-card rank-4">
+    <div class="rank-num">#4</div>
+    <div class="rank-brand">玉山銀行</div>
+    <div class="rank-score">168</div>
+    <div class="rank-desc">信用卡繳牌照稅<br>稅務季話題</div>
+  </div>
+  <div class="rank-card rank-5">
+    <div class="rank-num">#5</div>
+    <div class="rank-brand">國泰世華</div>
+    <div class="rank-score">86</div>
+    <div class="rank-desc">健康走活動<br>CUBE 慶生月</div>
+  </div>
+  <div class="rank-card rank-6">
+    <div class="rank-num">#6</div>
+    <div class="rank-brand">彰化銀行</div>
+    <div class="rank-score">49</div>
+    <div class="rank-desc">ESG / 台灣 Pay<br>有機觸及為主</div>
+  </div>
+  <div class="rank-card rank-7">
+    <div class="rank-num">#7</div>
+    <div class="rank-brand">Richart</div>
+    <div class="rank-score">~150</div>
+    <div class="rank-desc">年獸圖鑑留言文<br>貼文 API 限制，估算值</div>
+  </div>
+</div>
+
+<!-- 03 CONTENT MIX -->
+<div class="sec-title">03 內容類型比例分布</div>
+<div class="bar-section">
+  <div class="bar-row">
+    <div class="bar-label">國泰世華</div>
+    <div class="bar-track">
+      <div class="bar-seg" style="width:60%;background:#378add;">促銷 60%</div>
+      <div class="bar-seg" style="width:30%;background:#ba7517;">品牌 30%</div>
+      <div class="bar-seg" style="width:10%;background:#1d9e75;">10%</div>
+    </div>
+    <div class="bar-val"><span class="mid">促銷主導</span></div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">玉山銀行</div>
+    <div class="bar-track">
+      <div class="bar-seg" style="width:40%;background:#378add;">促銷 40%</div>
+      <div class="bar-seg" style="width:30%;background:#1d9e75;">教學 30%</div>
+      <div class="bar-seg" style="width:30%;background:#534ab7;">活動 30%</div>
+    </div>
+    <div class="bar-val"><span class="mid">均衡多元</span></div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">台新優惠市集</div>
+    <div class="bar-track">
+      <div class="bar-seg" style="width:50%;background:#378add;">促銷 50%</div>
+      <div class="bar-seg" style="width:30%;background:#534ab7;">活動 30%</div>
+      <div class="bar-seg" style="width:20%;background:#d85a30;">互動 20%</div>
+    </div>
+    <div class="bar-val"><span class="hi">互動最強</span></div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">中國信託</div>
+    <div class="bar-track">
+      <div class="bar-seg" style="width:40%;background:#534ab7;">活動 40%</div>
+      <div class="bar-seg" style="width:30%;background:#378add;">促銷 30%</div>
+      <div class="bar-seg" style="width:20%;background:#ba7517;">品牌 20%</div>
+      <div class="bar-seg" style="width:10%;background:#1d9e75;">10%</div>
+    </div>
+    <div class="bar-val"><span class="hi">活動主導</span></div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">彰化銀行</div>
+    <div class="bar-track">
+      <div class="bar-seg" style="width:40%;background:#ba7517;">品牌 40%</div>
+      <div class="bar-seg" style="width:30%;background:#378add;">促銷 30%</div>
+      <div class="bar-seg" style="width:20%;background:#3b6d11;">ESG 20%</div>
+      <div class="bar-seg" style="width:10%;background:#d85a30;">10%</div>
+    </div>
+    <div class="bar-val"><span class="lo">品牌主導</span></div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">合作金庫</div>
+    <div class="bar-track">
+      <div class="bar-seg" style="width:35%;background:#1d9e75;">教學 35%</div>
+      <div class="bar-seg" style="width:30%;background:#378add;">促銷 30%</div>
+      <div class="bar-seg" style="width:20%;background:#d85a30;">互動 20%</div>
+      <div class="bar-seg" style="width:15%;background:#ba7517;">15%</div>
+    </div>
+    <div class="bar-val"><span class="mid">教學主導</span></div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">Richart</div>
+    <div class="bar-track">
+      <div class="bar-seg" style="width:45%;background:#1d9e75;">教學 45%</div>
+      <div class="bar-seg" style="width:35%;background:#378add;">促銷 35%</div>
+      <div class="bar-seg" style="width:20%;background:#d85a30;">互動 20%</div>
+    </div>
+    <div class="bar-val"><span class="lo">教學導流</span></div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#378add;"></div>促銷</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#534ab7;"></div>活動</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ba7517;"></div>品牌/敘事</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1d9e75;"></div>教育</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3b6d11;"></div>ESG</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d85a30;"></div>互動</div>
+  </div>
+</div>
+
+<!-- 04 COMPARISON TABLE -->
+<div class="sec-title">04 跨品牌比較表</div>
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>維度</th>
+      <th>國泰世華</th>
+      <th>玉山銀行</th>
+      <th>台新優惠市集</th>
+      <th>中國信託</th>
+      <th>彰化銀行</th>
+      <th>合作金庫</th>
+      <th>Richart</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>發文頻率</td>
+      <td><span class="dot dot-h"></span>高（週3–4）</td>
+      <td><span class="dot dot-h"></span>高（幾乎每日）</td>
+      <td><span class="dot dot-h"></span>高（每日）</td>
+      <td><span class="dot dot-h"></span>高（週3–4）</td>
+      <td><span class="dot dot-h"></span>高（每日）</td>
+      <td><span class="dot dot-h"></span>高（幾乎每日）</td>
+      <td><span class="dot dot-m"></span>中（週1–2）</td>
+    </tr>
+    <tr>
+      <td>固定系列</td>
+      <td>CUBE 慶生月、日本賞</td>
+      <td>好友日（每週特定日）</td>
+      <td>無固定系列，活動期驅動</td>
+      <td>IP 實習日記系列</td>
+      <td>彰銀雙周報</td>
+      <td>防詐教育系列</td>
+      <td>生日慶開戶活動（年度）</td>
+    </tr>
+    <tr>
+      <td>最高單則互動</td>
+      <td>83 ❤</td>
+      <td>164 ❤</td>
+      <td>❤1,661 + 💬1,351 + 🔁890</td>
+      <td>❤1,407 + 💬10</td>
+      <td>42 ❤</td>
+      <td>❤738 + 💬687 + 🔁377</td>
+      <td>約 150 ❤（估算）</td>
+    </tr>
+    <tr>
+      <td>互動驅動方式</td>
+      <td>留言問答（毛孩等級）</td>
+      <td>稅務話題 × 優惠誘因</td>
+      <td>留言抽獎 + 投放加持</td>
+      <td>IP 截圖 + App 任務</td>
+      <td>有機內容共鳴</td>
+      <td>留言抽獎（偶發）</td>
+      <td>開戶任務 + 優惠誘因</td>
+    </tr>
+    <tr>
+      <td>高互動貼文類型</td>
+      <td>生活互動問答</td>
+      <td>稅務攻略 / 旅遊回饋</td>
+      <td>留言抽獎 / Reel</td>
+      <td>IP 聯名 Reel</td>
+      <td>ESG / 品牌故事</td>
+      <td>節日抽獎活動</td>
+      <td>年獸圖鑑留言文 / 生日慶</td>
+    </tr>
+    <tr>
+      <td>導流目的地</td>
+      <td>CUBE App</td>
+      <td>玉山行動銀行 App</td>
+      <td>活動頁 + LINE POINTS</td>
+      <td>中信行動銀行 App</td>
+      <td>官網 + YouTube</td>
+      <td>官網活動頁</td>
+      <td>Richart App（tsbk.tw）</td>
+    </tr>
+    <tr>
+      <td>FB 在行銷中的角色</td>
+      <td>優惠公告輔助</td>
+      <td>App 導流 + 教學</td>
+      <td>主力轉換平台</td>
+      <td>App 導流主渠道</td>
+      <td>品牌媒體化</td>
+      <td>教育廣播 + 偶發互動</td>
+      <td>輔助廣播，IG 才是主場</td>
+    </tr>
+    <tr>
+      <td>策略偏向</td>
+      <td>促銷 + 品牌</td>
+      <td>教學 + 導流</td>
+      <td>互動 + 促銷（投放）</td>
+      <td>互動 + App 導流</td>
+      <td>品牌媒體化</td>
+      <td>教育 + 偶發互動</td>
+      <td>教學 + App 導流</td>
+    </tr>
+    <tr>
+      <td>核心 USP 1</td>
+      <td>日本旅遊高回饋</td>
+      <td>好友日多品牌整合</td>
+      <td>多平台整合優惠</td>
+      <td>萌 IP 聯名體驗</td>
+      <td>ESG 永續金融</td>
+      <td>防詐 / 安養信託教育</td>
+      <td>優利活存高利率（3.5%）</td>
+    </tr>
+    <tr>
+      <td>核心 USP 2</td>
+      <td>卡友稀缺特權</td>
+      <td>數位帳戶開戶教學</td>
+      <td>留言互動爆量機制</td>
+      <td>App 多層導流閉環</td>
+      <td>柴寶雙周報系列</td>
+      <td>智能理財 iCooper</td>
+      <td>數位開戶生日慶活動</td>
+    </tr>
+    <tr>
+      <td>核心 USP 3</td>
+      <td>CUBE 多元回饋切換</td>
+      <td>信用卡稅務季回饋</td>
+      <td>旅遊 + 消費回饋</td>
+      <td>親子金融服務</td>
+      <td>台灣 Pay 繳稅整合</td>
+      <td>外幣定存優惠</td>
+      <td>信貸低利率（最低 2.1%）</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- 05 QUADRANT -->
+<div class="sec-title">05 策略定位象限：導流目的 × 互動驅動方式</div>
+<div class="quad-wrap">
+  <div class="quad-container">
+    <div class="quad-y-label">機制型互動（誘因/規則驅動）↑ ↓ 內容型互動（共鳴/有機）</div>
+    <div>
+      <div class="quad-grid">
+        <div class="quad quad-tl">
+          <div class="quad-label">轉換導流區</div>
+          <div class="quad-brands">
+            <span class="qbadge qb-purple">台新優惠市集</span>
+            <span class="qbadge qb-purple">中國信託</span>
+            <span class="qbadge qb-coral">合作金庫</span>
+          </div>
+          <div class="quad-note">留言抽獎 / App 任務 → 點連結離開<br>高互動 + 高轉換，多需投放支撐</div>
+        </div>
+        <div class="quad quad-tr">
+          <div class="quad-label">社群經營區（空白）</div>
+          <div class="quad-brands">
+            <span class="qbadge" style="background:#f5f4f0;color:#888;font-size:10px;">幾乎無品牌佔據</span>
+          </div>
+          <div class="quad-note">內容共鳴 + 互動機制並行<br>FB 上稀少，需投放才能維持</div>
+        </div>
+        <div class="quad quad-bl">
+          <div class="quad-label">導流廣播區</div>
+          <div class="quad-brands">
+            <span class="qbadge qb-green">國泰世華</span>
+            <span class="qbadge qb-green">玉山銀行</span>
+            <span class="qbadge qb-green">Richart</span>
+            <span class="qbadge qb-dash">第一銀行（現況）</span>
+          </div>
+          <div class="quad-note">單向公告 → 點連結 → 辦業務<br>互動低，轉換靠連結導出<br>Richart FB 為輔助，主場在 IG</div>
+        </div>
+        <div class="quad quad-br">
+          <div class="quad-label">品牌媒體區</div>
+          <div class="quad-brands">
+            <span class="qbadge qb-amber">彰化銀行</span>
+          </div>
+          <div class="quad-note">敘事內容 → 養追蹤習慣<br>有機增長，慢但持久，不靠投放</div>
+        </div>
+      </div>
+      <div class="quad-x-label">App / 官網導流 ←————————————————————→ 平台留存</div>
+    </div>
+  </div>
+  <div style="font-size:10px;color:#9c9a92;margin-top:8px;">* 互動數含媒體投放，不代表純自然觸及　　* 虛線圓代表第一銀行推估現況位置</div>
+</div>
+
+<!-- 06 INSIGHTS -->
+<div class="sec-title">06 洞察 Insights</div>
+<div class="insight-grid">
+
+  <div class="ic green">
+    <h4>留言抽獎是 FB 最有效的互動武器</h4>
+    <p>台新易匯通文 1,661 ❤ + 1,351 留言 + 890 分享；合庫兒童節文 738 ❤ + 687 留言。「情境痛點 → 解法 → 留言抽獎」三段結構是共同公式，搭配投放可放大 10–50 倍互動。</p>
+  </div>
+
+  <div class="ic green">
+    <h4>中信三層閉環最值得複製</h4>
+    <p>FB 貼文 → App 任務牆 → OPENPOINT 抽獎 → 再用 App。每則貼文帶 3 個以上連結，IP 聯名提升分享意願，是導流閉環設計的最佳範例。</p>
+  </div>
+
+  <div class="ic green">
+    <h4>玉山「好友日」是少見的定期整合機制</h4>
+    <p>每週固定特定日發布多品牌優惠整合貼文（Uber Eats、小米、證券等），形成固定追蹤預期。不靠單一大活動，靠週期感建立習慣。</p>
+  </div>
+
+  <div class="ic amber">
+    <h4>合庫偶發性互動潛力被低估</h4>
+    <p>日常貼文互動 18–45 ❤，但兒童節留言抽獎單則爆出 1,802 綜合互動，顯示合庫粉絲有回應能力，只是缺乏機制設計來規律啟動。</p>
+  </div>
+
+  <div class="ic amber">
+    <h4>稅務季是可搶佔的話題空白</h4>
+    <p>玉山信用卡繳牌照稅貼文拿下 164 ❤，是其樣本最高。彰銀也有進場。但台新、中信、國泰幾乎缺席。4–6 月牌照稅 + 房屋稅是全民話題，空檔明顯。</p>
+  </div>
+
+  <div class="ic amber">
+    <h4>彰銀「雙周報」是品牌媒體化的孤例</h4>
+    <p>六家中唯一系統性做品牌敘事系列的品牌。互動數雖低，但建立長期追蹤習慣，是不靠投放也能持續有曝光的路徑，適合預算有限的長期策略。</p>
+  </div>
+
+  <div class="ic blue">
+    <h4>Richart：FB 是輔助，IG 才是主場</h4>
+    <p>Richart 擁有 24.2 萬 FB 粉絲但發文頻率偏低（週 1–2 則），互動數估算在競品中排末段。品牌主力內容放在 IG 的「圓環旁說書人」帳號，FB 僅作為開戶活動與優惠廣播的輔助渠道。這是台新金控有意識的雙帳號分工策略。</p>
+  </div>
+
+  <div class="ic blue">
+    <h4>理財教育內容是真正的藍海</h4>
+    <p>合庫有做防詐/安養信託教育，玉山有做數位帳戶問答體教學，但兩者都還不夠系統化。其餘四家幾乎沒有固定教育系列。建立週更理財教學欄目，是用內容建立長期信任的最低競爭空間。</p>
+  </div>
+
+  <div class="ic coral">
+    <h4>FB 右上象限目前無人佔據</h4>
+    <p>「平台留存 + 機制型互動」象限空白。若能設計不把人導出 FB、但有互動誘因的貼文（例如留言完成任務直接獲獎），將形成清楚差異化定位。</p>
+  </div>
+
+</div>
+
+<!-- 07 OPPORTUNITY -->
+<div class="sec-title">07 第一銀行可執行機會點</div>
+<div class="opp-box">
+  <div style="font-size:13px;color:#73726c;margin-bottom:4px;">基於競品分析，以下為第一銀行最具可行性的 4 個切入方向：</div>
+  <div class="opp-grid">
+    <div class="opp-item o1">
+      <h5>立即可做：留言抽獎機制設計</h5>
+      <p>參考台新/合庫公式，情境痛點 + 留言抽獎 + iLEO 導流，一則貼文同時拉互動與開戶。</p>
+    </div>
+    <div class="opp-item o2">
+      <h5>立即可做：稅務季搶先佈局</h5>
+      <p>玉山已入場，其他競品缺席。4月牌照稅攻略懶人包（台灣Pay + iLEO），搶先卡位話題。</p>
+    </div>
+    <div class="opp-item o3">
+      <h5>中期建立：好友日式固定優惠整合</h5>
+      <p>參考玉山好友日，建立「小粉獅好康週」固定機制，整合信用卡、外幣、保險等多產品優惠。</p>
+    </div>
+    <div class="opp-item o4">
+      <h5>長期差異化：理財教育固定欄目</h5>
+      <p>六家競品都未做系統性理財教育。以「獅獅理財小視窗」為基礎建立週更系列，用知識建立長期信任。</p>
+    </div>
+  </div>
+</div>
+
+<!-- 08 SUMMARY -->
+<div class="sec-title">08 總結</div>
+<div class="summary">
+  <h3>目前銀行 Facebook 社群經營的主要趨勢</h3>
+  <p>
+    台灣銀行品牌的 FB 策略正從「<strong>優惠公告板</strong>」演化為「<strong>互動型轉換平台</strong>」。
+    核心競爭已不在回饋率高低，而在於<strong>誰的互動機制設計得更聰明</strong>。
+    台新靠<strong>留言抽獎 + 媒體投放</strong>衝爆量，中信靠<strong>IP 聯名 + App 閉環</strong>深度導流，
+    玉山靠<strong>好友日週期整合</strong>建立固定觸及，合庫靠<strong>教育內容</strong>慢慢累積信任。
+    彰銀的品牌媒體化是另一條路——不靠投放、靠內容建立長期資產。
+    <strong>短期轉換與長期品牌需要雙線並行</strong>，是這個時代銀行社群最重要的策略判斷。
+  </p>
+</div>
+<div class="source">資料來源：ByCrawl（Facebook 公開貼文）｜分析日期：2026 年 4 月｜玉山、合庫粉絲總數未取得，待補｜Richart 貼文 API 限制，互動數為估算值｜僅供內部策略參考</div>
+
+</div>
+</body>
+</html>
