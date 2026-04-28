@@ -1,0 +1,443 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 3rem; font-family: var(--font-sans); }
+.pages { display: flex; gap: 8px; margin-bottom: 1.75rem; align-items: center; }
+.page-btn { font-size: 12px; padding: 5px 18px; border-radius: 99px; border: 0.5px solid #2d7a3a; background: #fff; color: #2d7a3a; cursor: pointer; font-weight: 500; }
+.page-btn.active { background: #2d7a3a; color: #fff; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── BRAND COLORS ── */
+:root {
+  --g-dark: #1e5c28;
+  --g-mid: #2d7a3a;
+  --g-light: #4a9e58;
+  --g-pale: #e8f5eb;
+  --g-pale2: #f2faf4;
+  --g-gold: #c8960a;
+}
+
+/* ══ FRONT ══ */
+.dm-front { border-radius: 20px; overflow: hidden; border: 0.5px solid #c8dfc9; background: #fff; }
+
+/* HEADER */
+.dm-header {
+  background: var(--g-dark);
+  padding: 1.5rem 2rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.brand-logo { display: flex; align-items: center; gap: 10px; }
+.logo-tree { width: 32px; height: 32px; }
+.brand-name { font-size: 18px; font-weight: 500; color: #fff; letter-spacing: 0.02em; }
+.brand-tag { font-size: 11px; color: #ffffff88; letter-spacing: 0.06em; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(160deg, #e8f5eb 0%, #f2faf4 60%, #fff 100%);
+  padding: 2rem 2rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  border-bottom: 0.5px solid #c8dfc9;
+}
+.hero-left {}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--g-mid); border: 0.5px solid #a8d4ac; border-radius: 99px;
+  padding: 4px 12px; margin-bottom: 1rem; background: #fff;
+}
+.hero-title {
+  font-size: 28px; font-weight: 500; color: var(--g-dark);
+  line-height: 1.35; margin-bottom: 0.75rem;
+}
+.hero-title em { font-style: normal; color: var(--g-mid); }
+.hero-title .plus { color: var(--g-gold); font-size: 32px; }
+.hero-desc {
+  font-size: 13px; color: #4a6b4e; line-height: 1.7;
+}
+
+/* STAMP CARD */
+.stamp-card {
+  background: #fff;
+  border: 1.5px solid #a8d4ac;
+  border-radius: 16px;
+  padding: 1.25rem 1rem;
+  box-shadow: 0 2px 12px #2d7a3a11;
+}
+.stamp-card-title {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13px; font-weight: 500; color: var(--g-dark);
+  margin-bottom: 1rem;
+}
+.stamp-grid-mini {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+  margin-bottom: 0.75rem;
+}
+.stamp-item {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.stamp-circle {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.stamp-circle.filled { background: var(--g-pale); border: 2px solid var(--g-light); }
+.stamp-circle.empty { background: #f5f5f5; border: 2px dashed #ccc; }
+.stamp-circle.plus-btn { background: var(--g-gold); border: 2px solid var(--g-gold); font-size: 20px; }
+.stamp-name { font-size: 10px; color: #4a6b4e; }
+.stamp-name.empty { color: #bbb; }
+.stamp-progress {
+  text-align: center; font-size: 11px; color: var(--g-mid); font-weight: 500;
+}
+
+/* STEP SECTION */
+.steps-zone { padding: 1.75rem 2rem; border-bottom: 0.5px solid #c8dfc9; }
+.steps-title { font-size: 13px; font-weight: 500; color: var(--g-dark); margin-bottom: 1.25rem; }
+.step-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 1rem; }
+.step-row:last-child { margin-bottom: 0; }
+.step-circle {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--g-mid); color: #fff;
+  font-size: 12px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.step-content {}
+.step-head { font-size: 13px; font-weight: 500; color: var(--g-dark); margin-bottom: 3px; }
+.step-body { font-size: 12px; color: #4a6b4e; line-height: 1.55; }
+
+/* HANDWRITE TABLE */
+.hw-table { padding: 1.75rem 2rem; border-bottom: 0.5px solid #c8dfc9; }
+.hw-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--g-mid); margin-bottom: 1rem; }
+.hw-col-head { display: grid; grid-template-columns: 1fr 120px 80px; gap: 8px; padding: 0 0 6px; border-bottom: 0.5px solid #c8dfc9; margin-bottom: 4px; }
+.hw-col-head span { font-size: 11px; color: #888; }
+.hw-row-item { display: grid; grid-template-columns: 1fr 120px 80px; gap: 8px; align-items: center; padding: 9px 0; border-bottom: 1px dashed #d4ecd6; }
+.hw-row-item:last-child { border-bottom: none; }
+.hw-name-cell { display: flex; align-items: center; gap: 8px; }
+.hw-dot { width: 26px; height: 26px; border-radius: 50%; background: var(--g-pale); border: 1px solid #a8d4ac; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+.hw-line-input { flex: 1; border: none; border-bottom: 1px solid #c8dfc9; background: transparent; font-size: 14px; color: #1e5c28; padding: 2px 4px; outline: none; font-family: var(--font-sans); }
+.hw-line-input::placeholder { color: #bbb; font-size: 12px; }
+.ck-row { display: flex; gap: 5px; }
+.ck { width: 26px; height: 26px; border-radius: 6px; border: 1px solid #a8d4ac; background: var(--g-pale2); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 10px; color: #4a6b4e; user-select: none; }
+.ck.on { background: var(--g-mid); border-color: var(--g-mid); color: #fff; }
+.pct-cell { display: flex; align-items: center; gap: 3px; }
+.pct-in { width: 44px; border: none; border-bottom: 1px solid #c8dfc9; background: transparent; font-size: 16px; font-weight: 500; color: var(--g-dark); text-align: center; outline: none; padding: 2px; font-family: var(--font-sans); }
+.pct-in::placeholder { color: #ccc; font-size: 12px; font-weight: 400; }
+.pct-s { font-size: 12px; color: #888; }
+.add-member { width: 100%; margin-top: 10px; padding: 9px; border: 1.5px dashed #a8d4ac; border-radius: 10px; background: transparent; color: var(--g-mid); font-size: 13px; cursor: pointer; }
+.hw-footnote { margin-top: 12px; font-size: 12px; color: #4a6b4e; padding: 10px 14px; background: var(--g-pale2); border-radius: 8px; line-height: 1.6; border-left: 2px solid #a8d4ac; }
+
+/* BRIDGE */
+.bridge { background: var(--g-dark); padding: 1.5rem 2rem; }
+.bridge-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.bridge-text {}
+.bridge-q { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: 4px; line-height: 1.4; }
+.bridge-a { font-size: 12px; color: #ffffffaa; line-height: 1.55; }
+.bridge-arrow { font-size: 28px; color: #ffffff44; flex-shrink: 0; }
+
+/* PRODUCTS */
+.products { padding: 1.75rem 2rem; }
+.prod-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--g-mid); margin-bottom: 1rem; }
+.prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.pc { border: 1px solid #a8d4ac; border-radius: 14px; padding: 14px 12px; background: #fff; }
+.pc.hi { background: var(--g-mid); border-color: var(--g-mid); }
+.pc-tag { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 7px; }
+.pc .pc-tag { color: var(--g-light); }
+.pc.hi .pc-tag { color: #ffffff66; }
+.pc-name { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.pc .pc-name { color: var(--g-dark); }
+.pc.hi .pc-name { color: #fff; }
+.pc-desc { font-size: 12px; line-height: 1.55; }
+.pc .pc-desc { color: #4a6b4e; }
+.pc.hi .pc-desc { color: #ffffffaa; }
+.pc-who { margin-top: 10px; font-size: 11px; }
+.pc .pc-who { color: var(--g-mid); }
+.pc.hi .pc-who { color: #ffffff66; }
+
+/* ══ BACK ══ */
+.dm-back { border-radius: 20px; overflow: hidden; border: 0.5px solid #c8dfc9; background: #fff; }
+.back-header { background: var(--g-dark); padding: 2rem 2rem 1.75rem; text-align: center; }
+.back-header-title { font-size: 22px; font-weight: 500; color: #fff; line-height: 1.4; margin-bottom: 0.5rem; }
+.back-header-sub { font-size: 13px; color: #ffffffaa; line-height: 1.65; }
+.back-header-quote { font-size: 15px; color: #ffffffcc; margin-top: 1rem; padding-top: 1rem; border-top: 0.5px solid #ffffff33; font-style: normal; line-height: 1.5; }
+
+.family-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.fc { padding: 1.5rem 1.75rem; border-right: 0.5px solid #c8dfc9; border-bottom: 0.5px solid #c8dfc9; }
+.fc:nth-child(2n) { border-right: none; }
+.fc:nth-child(3), .fc:nth-child(4) { border-bottom: none; }
+.fc-icon { font-size: 22px; margin-bottom: 8px; }
+.fc-head { font-size: 14px; font-weight: 500; color: var(--g-dark); margin-bottom: 5px; line-height: 1.35; }
+.fc-body { font-size: 12px; color: #4a6b4e; line-height: 1.6; }
+.fc-tag { display: inline-block; margin-top: 10px; font-size: 11px; padding: 3px 10px; border-radius: 99px; border: 1px solid #a8d4ac; color: var(--g-mid); background: var(--g-pale2); }
+
+.back-cta { padding: 1.75rem 2rem; background: var(--g-pale2); display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-top: 0.5px solid #c8dfc9; }
+.cta-text { font-size: 14px; color: var(--g-dark); font-weight: 500; line-height: 1.5; }
+.cta-sub { font-size: 12px; color: #4a6b4e; margin-top: 3px; }
+.cta-qr { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.qr-box { width: 60px; height: 60px; border: 1px solid #a8d4ac; border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center; }
+.cta-btn-col { display: flex; flex-direction: column; gap: 6px; }
+.cta-btn { font-size: 12px; padding: 7px 16px; border-radius: 99px; cursor: pointer; white-space: nowrap; font-weight: 500; border: none; }
+.cta-btn.primary { background: var(--g-mid); color: #fff; }
+.cta-btn.secondary { background: #fff; color: var(--g-mid); border: 1px solid var(--g-mid); }
+
+.back-footer-bar { background: var(--g-dark); padding: 0.75rem 2rem; text-align: center; font-size: 11px; color: #ffffff66; letter-spacing: 0.04em; }
+
+@media (max-width: 520px) {
+  .hero { grid-template-columns: 1fr; }
+  .prod-grid { grid-template-columns: 1fr; }
+  .family-grid { grid-template-columns: 1fr; }
+  .fc { border-right: none; }
+  .back-cta { flex-direction: column; align-items: flex-start; }
+  .bridge-inner { flex-direction: column; }
+  .hw-col-head, .hw-row-item { grid-template-columns: 1fr 100px 68px; }
+}
+</style>
+
+<div class="wrap">
+<div class="pages">
+  <span style="font-size:13px;color:#4a6b4e;margin-right:4px;">頁面預覽</span>
+  <button class="page-btn active" onclick="go(0)">正面</button>
+  <button class="page-btn" onclick="go(1)">背面</button>
+</div>
+
+<!-- ════ FRONT ════ -->
+<div class="page active" id="p0">
+<div class="dm-front">
+
+  <div class="dm-header">
+    <div class="brand-logo">
+      <svg class="logo-tree" viewBox="0 0 32 32" fill="none">
+        <ellipse cx="16" cy="11" rx="10" ry="9" fill="#4a9e58"/>
+        <ellipse cx="16" cy="8" rx="7" ry="6" fill="#6ab874"/>
+        <rect x="14" y="19" width="4" height="8" rx="2" fill="#a8d4ac"/>
+      </svg>
+      <div>
+        <div class="brand-name">國泰人壽</div>
+        <div class="brand-tag">Cathay Life Insurance</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:#ffffff88;">家庭保障專案</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="#2d7a3a"/><path d="M3.5 6.5L5.5 8.5L8.5 4.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        全面的家庭保障
+      </div>
+      <div class="hero-title">
+        保障集點全<br>
+        <em>讓愛更完整</em>
+        <span class="plus"> +1</span>
+      </div>
+      <div class="hero-desc">
+        您的家庭保障，真的齊全了嗎？<br>
+        寫下每位家人，一起找出<br>
+        最需要補強的那一塊。
+      </div>
+    </div>
+
+    <!-- MINI STAMP CARD -->
+    <div class="stamp-card">
+      <div class="stamp-card-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><ellipse cx="8" cy="6" rx="5" ry="4.5" fill="#4a9e58"/><ellipse cx="8" cy="4.5" rx="3.5" ry="3" fill="#6ab874"/><rect x="7" y="9.5" width="2" height="4" rx="1" fill="#a8d4ac"/></svg>
+        全家安心集點卡
+      </div>
+      <div class="stamp-grid-mini">
+        <div class="stamp-item">
+          <div class="stamp-circle filled">🌳</div>
+          <div class="stamp-name">本人</div>
+        </div>
+        <div class="stamp-item">
+          <div class="stamp-circle filled">🌳</div>
+          <div class="stamp-name">配偶</div>
+        </div>
+        <div class="stamp-item">
+          <div class="stamp-circle filled">🌳</div>
+          <div class="stamp-name">子女</div>
+        </div>
+        <div class="stamp-item">
+          <div class="stamp-circle empty">🌲</div>
+          <div class="stamp-name empty">父母</div>
+        </div>
+        <div class="stamp-item">
+          <div class="stamp-circle plus-btn" style="font-size:22px;color:#fff;">+</div>
+          <div class="stamp-name" style="color:var(--g-gold);font-weight:500;">+1</div>
+        </div>
+      </div>
+      <div class="stamp-progress">集點累積中！還差 <strong style="color:var(--g-mid);">1 位</strong> 家人</div>
+    </div>
+  </div>
+
+  <!-- USE STEPS -->
+  <div class="steps-zone">
+    <div class="steps-title">業務使用說明</div>
+    <div class="step-row">
+      <div class="step-circle">1</div>
+      <div class="step-content">
+        <div class="step-head">請顧客寫下家庭成員</div>
+        <div class="step-body">填上稱謂（如：媽媽、老公、小明），讓每一位家人變得具體、有溫度</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-circle">2</div>
+      <div class="step-content">
+        <div class="step-head">勾選已有保障，填入保障感覺趴數</div>
+        <div class="step-body">不需精確，憑直覺即可。顧客寫下數字的瞬間，就是最好的對話起點</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-circle">3</div>
+      <div class="step-content">
+        <div class="step-head">引導到對應方案</div>
+        <div class="step-body">根據填寫結果，翻到下方找出最適合的守護方案，自然帶入產品說明</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HANDWRITE TABLE -->
+  <div class="hw-table">
+    <div class="hw-label">請填寫您家每一位成員</div>
+    <div class="hw-col-head">
+      <span>家庭成員</span>
+      <span style="text-align:center;">已有保障</span>
+      <span style="text-align:center;">保障感覺</span>
+    </div>
+    <div id="mlist">
+      <div class="hw-row-item">
+        <div class="hw-name-cell"><div class="hw-dot">😊</div><input class="hw-line-input" type="text" placeholder="例：媽媽" maxlength="8"/></div>
+        <div class="ck-row"><div class="ck" onclick="this.classList.toggle('on')">重</div><div class="ck" onclick="this.classList.toggle('on')">外</div><div class="ck" onclick="this.classList.toggle('on')">醫</div></div>
+        <div class="pct-cell"><input class="pct-in" type="number" min="0" max="100" placeholder="__"/><span class="pct-s">%</span></div>
+      </div>
+      <div class="hw-row-item">
+        <div class="hw-name-cell"><div class="hw-dot">😊</div><input class="hw-line-input" type="text" placeholder="例：老公" maxlength="8"/></div>
+        <div class="ck-row"><div class="ck" onclick="this.classList.toggle('on')">重</div><div class="ck" onclick="this.classList.toggle('on')">外</div><div class="ck" onclick="this.classList.toggle('on')">醫</div></div>
+        <div class="pct-cell"><input class="pct-in" type="number" min="0" max="100" placeholder="__"/><span class="pct-s">%</span></div>
+      </div>
+      <div class="hw-row-item">
+        <div class="hw-name-cell"><div class="hw-dot">😊</div><input class="hw-line-input" type="text" placeholder="例：小寶" maxlength="8"/></div>
+        <div class="ck-row"><div class="ck" onclick="this.classList.toggle('on')">重</div><div class="ck" onclick="this.classList.toggle('on')">外</div><div class="ck" onclick="this.classList.toggle('on')">醫</div></div>
+        <div class="pct-cell"><input class="pct-in" type="number" min="0" max="100" placeholder="__"/><span class="pct-s">%</span></div>
+      </div>
+    </div>
+    <button class="add-member" onclick="addRow()">＋ 新增家庭成員</button>
+    <div class="hw-footnote">趴數不需要精確，<strong>憑感覺就好</strong>。您寫下的數字，是我們一起討論的最好起點。</div>
+  </div>
+
+  <!-- BRIDGE -->
+  <div class="bridge">
+    <div class="bridge-inner">
+      <div class="bridge-text">
+        <div class="bridge-q">有沒有哪位家人，讓您想多補一點守護？</div>
+        <div class="bridge-a">那個想法，就是今天最值得聊的地方。請看下方找到對應方案。</div>
+      </div>
+      <div class="bridge-arrow">↓</div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="products">
+    <div class="prod-label">對應您家的守護方案</div>
+    <div class="prod-grid">
+      <div class="pc">
+        <div class="pc-tag">重病保障</div>
+        <div class="pc-name">重大疾病險</div>
+        <div class="pc-desc">確診即給付，讓家人專心照顧身體，不為費用分心。</div>
+        <div class="pc-who">→ 家中經濟支柱首選</div>
+      </div>
+      <div class="pc hi">
+        <div class="pc-tag">意外保障</div>
+        <div class="pc-name">意外傷害險</div>
+        <div class="pc-desc">保費親民、涵蓋廣，全家一起保最划算。</div>
+        <div class="pc-who">→ 全家都適用</div>
+      </div>
+      <div class="pc">
+        <div class="pc-tag">醫療保障</div>
+        <div class="pc-name">實支實付醫療險</div>
+        <div class="pc-desc">住院手術費用據實補償，安心選擇最好的治療。</div>
+        <div class="pc-who">→ 各年齡層皆宜</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════ BACK ════ -->
+<div class="page" id="p1">
+<div class="dm-back">
+
+  <div class="back-header">
+    <div class="back-header-title">從最重要的人開始準備</div>
+    <div class="back-header-sub">保障不需要一次到位<br>但可以從每個重要的人開始，逐步完整</div>
+    <div class="back-header-quote">每一份保障，都是替家庭多建立一道守護</div>
+  </div>
+
+  <div class="family-grid">
+    <div class="fc">
+      <div class="fc-icon">🧑</div>
+      <div class="fc-head">從自己開始</div>
+      <div class="fc-body">守住健康與收入，讓生活不被中斷。您是家庭的核心，先把自己照顧好。</div>
+      <div class="fc-tag">重病險 · 意外險</div>
+    </div>
+    <div class="fc">
+      <div class="fc-icon">💑</div>
+      <div class="fc-head">從另一半開始</div>
+      <div class="fc-body">共同承擔責任，讓家庭更穩定。為配偶補上完整保障，是最實在的體貼。</div>
+      <div class="fc-tag">重病險 · 醫療險</div>
+    </div>
+    <div class="fc">
+      <div class="fc-icon">👴</div>
+      <div class="fc-head">從父母開始</div>
+      <div class="fc-body">面對醫療與長照需求，提前規劃。讓父母安心，您也更放心。</div>
+      <div class="fc-tag">重病險 · 醫療險</div>
+    </div>
+    <div class="fc">
+      <div class="fc-icon">👶</div>
+      <div class="fc-head">從孩子開始</div>
+      <div class="fc-body">為成長與未來，建立長期保障。讓孩子每一段成長都有守護陪伴。</div>
+      <div class="fc-tag">意外險 · 醫療險</div>
+    </div>
+  </div>
+
+  <div class="back-cta">
+    <div>
+      <div class="cta-text">保障多一點，安心多一點</div>
+      <div class="cta-sub">掃描 QR Code 或洽詢業務顧問，預約專屬家庭保障規劃</div>
+    </div>
+    <div class="cta-qr">
+      <div class="cta-btn-col">
+        <button class="cta-btn primary">立即檢視保障缺口</button>
+        <button class="cta-btn secondary">取得專屬保障建議</button>
+      </div>
+      <div class="qr-box">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <rect x="2" y="2" width="14" height="14" rx="2" stroke="#2d7a3a" stroke-width="1.5"/>
+          <rect x="5" y="5" width="8" height="8" rx="1" fill="#2d7a3a"/>
+          <rect x="22" y="2" width="14" height="14" rx="2" stroke="#2d7a3a" stroke-width="1.5"/>
+          <rect x="25" y="5" width="8" height="8" rx="1" fill="#2d7a3a"/>
+          <rect x="2" y="22" width="14" height="14" rx="2" stroke="#2d7a3a" stroke-width="1.5"/>
+          <rect x="5" y="25" width="8" height="8" rx="1" fill="#2d7a3a"/>
+          <rect x="22" y="22" width="4" height="4" fill="#2d7a3a"/>
+          <rect x="28" y="22" width="4" height="4" fill="#2d7a3a"/>
+          <rect x="22" y="28" width="4" height="4" fill="#2d7a3a"/>
+          <rect x="28" y="28" width="4" height="4" fill="#2d7a3a"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-footer-bar">© 國泰人壽保險股份有限公司　業務專用文宣</div>
+
+</div>
+</div>
+
+</div>
+
+<script>
+function go(i){document.querySelectorAll('.page').forEach(function(p,j){p.classList.toggle('active',i===j)});document.querySelectorAll('.page-btn').forEach(function(b,j){b.classList.toggle('active',i===j)})}
+function addRow(){var l=document.getElementById('mlist');var r=document.createElement('div');r.className='hw-row-item';r.innerHTML='<div class="hw-name-cell"><div class="hw-dot">😊</div><input class="hw-line-input" type="text" placeholder="家人稱謂" maxlength="8"/></div><div class="ck-row"><div class="ck" onclick="this.classList.toggle(\'on\')">重</div><div class="ck" onclick="this.classList.toggle(\'on\')">外</div><div class="ck" onclick="this.classList.toggle(\'on\')">醫</div></div><div class="pct-cell"><input class="pct-in" type="number" min="0" max="100" placeholder="__"/><span class="pct-s">%</span></div>';l.appendChild(r)}
+</script>
